@@ -1,10 +1,72 @@
-import { memo, useCallback, useEffect, useRef, useState } from "react"
-import dasha1Image from "../../assets/dasha1.jpg"
-import dasha2Image from "../../assets/dasha2.jpg"
-import dasha3Image from "../../assets/dasha3.jpg"
+import { memo, useCallback, useRef, useState } from "react"
+import type { MouseEvent, ReactNode } from "react"
 import "./App.css"
 
-const schedule = [
+const dasha1Image = "/dasha1.jpg"
+const dasha2Image = "/dasha2.jpg"
+const dasha3Image = "/dasha3.jpg"
+
+type ScheduleEntry = {
+	day: string
+	type: string
+	color: "pink" | "purple"
+}
+
+type LinkHandler = (event: MouseEvent<HTMLAnchorElement>) => void
+
+type LeavingHomeProps = {
+	isLeavingHome: boolean
+}
+
+type PlatformsSectionProps = {
+	handleLinkClick: LinkHandler
+}
+
+type NeonButtonProps = {
+	icon: string
+	text: string
+	href: string
+	color: "pink" | "purple"
+	onClick: LinkHandler
+}
+
+type SectionTitleProps = {
+	children: ReactNode
+	icon: string
+}
+
+type FeatureCardProps = {
+	icon: string
+	title: string
+	description: string
+	color: "pink" | "purple"
+}
+
+type PlatformCardProps = {
+	platform: string
+	icon: string
+	description: string
+	image: string
+	color: "pink" | "purple"
+	link: string
+	onClick: LinkHandler
+}
+
+type ScheduleItemProps = {
+	day: string
+	type: string
+	color: "pink" | "purple"
+	delay: number
+}
+
+type SocialLinkProps = {
+	icon: string
+	href: string
+	color: "pink" | "purple"
+	onClick: LinkHandler
+}
+
+const schedule: ScheduleEntry[] = [
 	{
 		day: "понедельник",
 		type: "общение/просмотр заказов",
@@ -22,23 +84,53 @@ const schedule = [
 ]
 
 export default function App() {
-	const [isLeavingHome, setIsLeavingHome] = useState(false)
-	const [isNavigating, setIsNavigating] = useState(false)
+	const [isLeavingHome] = useState(false)
+	const containerRef = useRef<HTMLDivElement | null>(null)
 
-	const handleLinkClick = useCallback((e) => {
-		e.preventDefault()
-		const href = e.currentTarget.getAttribute("href")
-		if (href && href.startsWith("http")) {
-			window.open(href, "_blank")
+	const handleLinkClick = useCallback(
+		(e: MouseEvent<HTMLAnchorElement>) => {
+			e.preventDefault()
+			const href = e.currentTarget.getAttribute("href")
+			if (href && href.startsWith("http")) {
+				window.open(href, "_blank")
+			}
+		},
+		[]
+	)
+
+	const handleMouseMove = useCallback(
+		(event: MouseEvent<HTMLDivElement>) => {
+			if (!containerRef.current) {
+				return
+			}
+			const rect = containerRef.current.getBoundingClientRect()
+			const x = event.clientX - rect.left
+			const y = event.clientY - rect.top
+			containerRef.current.style.setProperty("--cursor-x", `${x}px`)
+			containerRef.current.style.setProperty("--cursor-y", `${y}px`)
+			containerRef.current.style.setProperty("--cursor-active", "1")
+		},
+		[]
+	)
+
+	const handleMouseLeave = useCallback(() => {
+		if (!containerRef.current) {
+			return
 		}
+		containerRef.current.style.setProperty("--cursor-active", "0")
 	}, [])
 
 	return (
 		<div
+			ref={containerRef}
 			className={`home-page-neon ${
 				isLeavingHome ? "home-page-leaving" : ""
 			}`}
+			onMouseMove={handleMouseMove}
+			onMouseLeave={handleMouseLeave}
 		>
+			<div className="home-background-image" />
+			<div className="home-cursor-glow" aria-hidden="true" />
 			<BackgroundTransitionOverlay isLeavingHome={isLeavingHome} />
 			<FloatingParticles isLeavingHome={isLeavingHome} />
 			<NeonGrid isLeavingHome={isLeavingHome} />
@@ -99,11 +191,11 @@ export default function App() {
 	)
 }
 
-const BackgroundTransitionOverlay = memo(({ isLeavingHome }) =>
+const BackgroundTransitionOverlay = memo(({ isLeavingHome }: LeavingHomeProps) =>
 	isLeavingHome ? <div className="home-background-transition" /> : null
 )
 
-const FloatingParticles = memo(({ isLeavingHome }) => (
+const FloatingParticles = memo(({ isLeavingHome }: LeavingHomeProps) => (
 	<div
 		className={`home-floating-particles ${
 			isLeavingHome ? "home-floating-particles-hidden" : ""
@@ -115,7 +207,7 @@ const FloatingParticles = memo(({ isLeavingHome }) => (
 	</div>
 ))
 
-const NeonGrid = memo(({ isLeavingHome }) => (
+const NeonGrid = memo(({ isLeavingHome }: LeavingHomeProps) => (
 	<div
 		className={`home-neon-grid ${
 			isLeavingHome ? "home-neon-grid-hidden" : ""
@@ -162,7 +254,8 @@ const AboutSection = memo(() => (
 	</section>
 ))
 
-const PlatformsSection = memo(({ handleLinkClick }) => (
+const PlatformsSection = memo(
+	({ handleLinkClick }: PlatformsSectionProps) => (
 	<section>
 		<div className="home-section-container">
 			<SectionTitle icon="📺">где меня найти</SectionTitle>
@@ -197,7 +290,8 @@ const PlatformsSection = memo(({ handleLinkClick }) => (
 			</div>
 		</div>
 	</section>
-))
+	)
+)
 
 const ScheduleSection = memo(() => (
 	<section>
@@ -216,7 +310,8 @@ const ScheduleSection = memo(() => (
 	</section>
 ))
 
-const CommunitySection = memo(({ handleLinkClick }) => (
+const CommunitySection = memo(
+	({ handleLinkClick }: PlatformsSectionProps) => (
 	<section>
 		<div className="home-section-container">
 			<SectionTitle icon="👥">вайб комьюнити</SectionTitle>
@@ -254,9 +349,10 @@ const CommunitySection = memo(({ handleLinkClick }) => (
 			</div>
 		</div>
 	</section>
-))
+	)
+)
 
-const FooterSection = memo(({ handleLinkClick }) => (
+const FooterSection = memo(({ handleLinkClick }: PlatformsSectionProps) => (
 	<footer className="home-footer">
 		<div className="home-footer-container">
 			<div className="home-footer-content">
@@ -301,7 +397,7 @@ const FooterSection = memo(({ handleLinkClick }) => (
 	</footer>
 ))
 
-function NeonButton({ icon, text, href, color, onClick }) {
+function NeonButton({ icon, text, href, color, onClick }: NeonButtonProps) {
 	return (
 		<div className="home-neon-button-wrapper">
 			<div
@@ -322,7 +418,7 @@ function NeonButton({ icon, text, href, color, onClick }) {
 	)
 }
 
-function SectionTitle({ children, icon }) {
+function SectionTitle({ children, icon }: SectionTitleProps) {
 	return (
 		<div className="home-section-title-wrapper">
 			<div className="home-section-icon-wrapper">{icon}</div>
@@ -333,7 +429,7 @@ function SectionTitle({ children, icon }) {
 	)
 }
 
-function FeatureCard({ icon, title, description, color }) {
+function FeatureCard({ icon, title, description, color }: FeatureCardProps) {
 	return (
 		<div className={`home-feature-card home-feature-card-${color}`}>
 			<div
@@ -358,7 +454,7 @@ function PlatformCard({
 	color,
 	link,
 	onClick,
-}) {
+}: PlatformCardProps) {
 	const [isHovered, setIsHovered] = useState(false)
 
 	return (
@@ -410,9 +506,12 @@ function PlatformCard({
 	)
 }
 
-function ScheduleItem({ day, type, color, delay }) {
+function ScheduleItem({ day, type, color, delay }: ScheduleItemProps) {
 	return (
-		<div className="home-schedule-item">
+		<div
+			className="home-schedule-item"
+			style={{ animationDelay: `${delay}s` }}
+		>
 			<div className={`home-schedule-line home-schedule-line-${color}`} />
 			<div className="home-schedule-content">
 				<div
@@ -433,7 +532,7 @@ function ScheduleItem({ day, type, color, delay }) {
 	)
 }
 
-function SocialLink({ icon, href, color, onClick }) {
+function SocialLink({ icon, href, color, onClick }: SocialLinkProps) {
 	return (
 		<a
 			href={href}
