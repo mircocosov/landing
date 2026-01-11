@@ -4,11 +4,51 @@
 	box-sizing: border-box;
 }
 
-.background {
-	width: 100%;
-	background-image: url("../../public/background.png");
-	height: auto;
-	background-size: 100% auto;
-	background-repeat: no-repeat;
+body {
+	min-height: 100vh;
+	background-color: #0b0b16;
+	color: #f8fafc;
+	font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+.home-page-neon {
+	position: relative;
+	min-height: 100vh;
+	overflow: hidden;
+	isolation: isolate;
+	--cursor-x: 50%;
+	--cursor-y: 50%;
+	--cursor-active: 0;
+}
+
+.home-page-neon > :not(.home-background-image):not(.home-cursor-glow) {
+	position: relative;
+	z-index: 1;
+}
+
+.home-background-image {
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	background-image: url("/background.png");
+	background-size: cover;
 	background-position: top center;
+	background-repeat: no-repeat;
+	filter: brightness(0.8) saturate(1.1);
+}
+
+.home-cursor-glow {
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	background: radial-gradient(
+		circle 50px at var(--cursor-x) var(--cursor-y),
+		rgba(236, 72, 153, 0.4),
+		rgba(139, 92, 246, 0.25) 45%,
+		rgba(11, 11, 22, 0) 70%
+	);
+	mix-blend-mode: screen;
+	opacity: var(--cursor-active);
+	transition: opacity 0.3s ease;
 }
