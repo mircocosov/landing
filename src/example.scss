@@ -1,5 +1,24 @@
-@import "../../styles/config.scss";
+$bg: #050508;
+$surface-primary: rgba(12, 12, 16, 0.9);
+$surface-secondary: rgba(14, 14, 20, 0.9);
+$elevated: rgba(5, 5, 8, 0.85);
+$panel: rgba(8, 8, 12, 0.95);
 
+$text-primary: rgba(246, 241, 211, 0.95);
+$text-secondary: rgba(246, 241, 211, 0.75);
+$text-muted: rgba(246, 241, 211, 0.6);
+$border-soft: rgba(255, 255, 255, 0.08);
+$border-strong: rgba(248, 211, 117, 0.6);
+
+$accent: #f8d375;
+$accent-dark: #f0b755;
+$accent-gradient: linear-gradient(135deg, $accent, $accent-dark);
+
+$xl: 32px;
+$lg: 28px;
+$md: 18px;
+$sm: 12px;
+$pill: 999px;
 $neon-purple: #8b5cf6;
 $neon-pink: #ec4899;
 $neon-purple-light: #a78bfa;
@@ -1028,7 +1047,6 @@ body:has(.home-page-neon),
 	}
 }
 
-// Neon Grid
 .home-neon-grid {
 	position: fixed;
 	inset: 0;
@@ -1067,7 +1085,6 @@ body:has(.home-page-neon),
 	width: 100%;
 }
 
-// Breathing Light
 .home-breathing-light {
 	position: fixed;
 	pointer-events: none;
@@ -1099,7 +1116,6 @@ body:has(.home-page-neon),
 	filter: blur(120px);
 }
 
-// Animated Gradient
 .home-animated-gradient {
 	background: #000000;
 	position: fixed;
@@ -1128,7 +1144,6 @@ body:has(.home-page-neon),
 	z-index: 2;
 }
 
-// Floating Particles
 .home-floating-particles {
 	position: fixed;
 	inset: 0;
@@ -1233,12 +1248,10 @@ body:has(.home-page-neon) .site-signature,
 	display: none !important;
 }
 
-// Smooth scroll
 html {
 	scroll-behavior: smooth;
 }
 
-// Page Transition Styles
 .home-page-leaving {
 	pointer-events: none;
 	overflow: hidden;
