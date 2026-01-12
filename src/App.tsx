@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react"
 import type { MouseEvent, ReactNode } from "react"
 import "./App.scss"
+import SpotlightBackground from "./components/SpotlightBackground"
 
 const dasha1Image = "/dasha1.jpg"
 const dasha2Image = "/dasha2.jpg"
@@ -167,6 +168,9 @@ export default function App() {
 			onMouseMove={handleMouseMove}
 			onMouseLeave={handleMouseLeave}
 		>
+			<div hidden>
+				<SpotlightBackground imageUrl="/background.png" />
+			</div>
 			<div ref={backgroundRef} className="home-background-image" />
 			<div className="home-background-overlay" aria-hidden="true" />
 			<div className="home-cursor-glow" aria-hidden="true" />
