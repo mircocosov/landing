@@ -145,7 +145,7 @@ export default function App() {
 			"--reveal-y",
 			`${event.clientY}px`
 		)
-		containerRef.current.style.setProperty("--reveal-size", "520px")
+		containerRef.current.style.setProperty("--reveal-size", "100px")
 		containerRef.current.style.setProperty("--reveal-active", "1")
 	}, [])
 
