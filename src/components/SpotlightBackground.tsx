@@ -17,7 +17,10 @@ type SpotlightBackgroundProps = {
 	radius?: number
 	fade?: number
 	className?: string
+	style?: CSSProperties
 	children?: ReactNode
+	onPointerMove?: (event: PointerEvent<HTMLDivElement>) => void
+	onPointerLeave?: (event: PointerEvent<HTMLDivElement>) => void
 }
 
 const setCssVars = (
@@ -36,7 +39,10 @@ const SpotlightBackground = ({
 	radius = DEFAULT_RADIUS,
 	fade = DEFAULT_FADE,
 	className = "",
+	style,
 	children,
+	onPointerMove,
+	onPointerLeave,
 }: SpotlightBackgroundProps) => {
 	const wrapRef = useRef<HTMLDivElement | null>(null)
 	const rafIdRef = useRef<number | null>(null)
@@ -65,14 +71,19 @@ const SpotlightBackground = ({
 				y: event.clientY - rect.top,
 			}
 			scheduleUpdate()
+			onPointerMove?.(event)
 		},
-		[scheduleUpdate]
+		[scheduleUpdate, onPointerMove]
 	)
 
-	const handlePointerLeave = useCallback(() => {
-		latestPointRef.current = { x: -9999, y: -9999 }
-		scheduleUpdate()
-	}, [scheduleUpdate])
+	const handlePointerLeave = useCallback(
+		(event: PointerEvent<HTMLDivElement>) => {
+			latestPointRef.current = { x: -9999, y: -9999 }
+			scheduleUpdate()
+			onPointerLeave?.(event)
+		},
+		[scheduleUpdate, onPointerLeave]
+	)
 
 	useEffect(
 		() => () => {
@@ -96,6 +107,7 @@ const SpotlightBackground = ({
 		"--bg-url": `url(${imageUrl})`,
 		"--r": `${radius}px`,
 		"--fade": `${fade}px`,
+		...style,
 	} as CSSProperties
 
 	return (
