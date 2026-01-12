@@ -1,5 +1,5 @@
-import { memo, useCallback, useEffect, useRef, useState } from "react"
-import type { MouseEvent, ReactNode } from "react"
+import { memo, useCallback, useState } from "react"
+import type { MouseEvent, PointerEvent, ReactNode } from "react"
 import "./App.scss"
 import SpotlightBackground from "./components/SpotlightBackground.tsx"
 
@@ -86,93 +86,46 @@ const schedule: ScheduleEntry[] = [
 
 export default function App() {
 	const [isLeavingHome] = useState(false)
-	const containerRef = useRef<HTMLDivElement | null>(null)
-	const backgroundRef = useRef<HTMLDivElement | null>(null)
 
-	useEffect(() => {
-		const updateBackgroundHeight = () => {
-			if (containerRef.current && backgroundRef.current) {
-				const height = containerRef.current.scrollHeight
-				backgroundRef.current.style.height = `${height}px`
+	const handleLinkClick = useCallback(
+		(event: MouseEvent<HTMLAnchorElement>) => {
+			event.preventDefault()
+			const href = event.currentTarget.getAttribute("href")
+			if (href && href.startsWith("http")) {
+				window.open(href, "_blank")
 			}
-		}
+		},
+		[]
+	)
 
-		updateBackgroundHeight()
-		window.addEventListener("resize", updateBackgroundHeight)
-		const observer = new MutationObserver(updateBackgroundHeight)
+	const handlePointerMove = useCallback(
+		(event: PointerEvent<HTMLDivElement>) => {
+			const target = event.currentTarget
+			target.style.setProperty("--cursor-x", `${event.clientX}px`)
+			target.style.setProperty("--cursor-y", `${event.clientY}px`)
+			target.style.setProperty("--cursor-active", "1")
+		},
+		[]
+	)
 
-		if (containerRef.current) {
-			observer.observe(containerRef.current, {
-				childList: true,
-				subtree: true,
-				attributes: true,
-			})
-		}
-
-		return () => {
-			window.removeEventListener("resize", updateBackgroundHeight)
-			observer.disconnect()
-		}
-	}, [])
-
-	const handleLinkClick = useCallback((e: MouseEvent<HTMLAnchorElement>) => {
-		e.preventDefault()
-		const href = e.currentTarget.getAttribute("href")
-		if (href && href.startsWith("http")) {
-			window.open(href, "_blank")
-		}
-	}, [])
-
-	const handleMouseMove = useCallback((event: MouseEvent<HTMLDivElement>) => {
-		if (!containerRef.current) {
-			return
-		}
-		// Используем clientX/Y напрямую для fixed позиционирования
-		containerRef.current.style.setProperty(
-			"--cursor-x",
-			`${event.clientX}px`
-		)
-		containerRef.current.style.setProperty(
-			"--cursor-y",
-			`${event.clientY}px`
-		)
-		containerRef.current.style.setProperty("--cursor-active", "1")
-		// Для эффекта reveal фона
-		containerRef.current.style.setProperty(
-			"--reveal-x",
-			`${event.clientX}px`
-		)
-		containerRef.current.style.setProperty(
-			"--reveal-y",
-			`${event.clientY}px`
-		)
-		containerRef.current.style.setProperty("--reveal-size", "100px")
-		containerRef.current.style.setProperty("--reveal-active", "1")
-	}, [])
-
-	const handleMouseLeave = useCallback(() => {
-		if (!containerRef.current) {
-			return
-		}
-		containerRef.current.style.setProperty("--cursor-active", "0")
-		containerRef.current.style.setProperty("--reveal-size", "0px")
-		containerRef.current.style.setProperty("--reveal-active", "0")
-	}, [])
+	const handlePointerLeave = useCallback(
+		(event: PointerEvent<HTMLDivElement>) => {
+			const target = event.currentTarget
+			target.style.setProperty("--cursor-active", "0")
+		},
+		[]
+	)
 
 	return (
-		<div
-			ref={containerRef}
+		<SpotlightBackground
+			imageUrl="/background.png"
 			className={`home-page-neon ${
 				isLeavingHome ? "home-page-leaving" : ""
 			}`}
-			onMouseMove={handleMouseMove}
-			onMouseLeave={handleMouseLeave}
+			style={{ backgroundColor: "#030303" }}
+			onPointerMove={handlePointerMove}
+			onPointerLeave={handlePointerLeave}
 		>
-			<div hidden>
-				<SpotlightBackground imageUrl="/background.png" />
-			</div>
-			<div ref={backgroundRef} className="home-background-image" />
-			<div className="home-background-overlay" aria-hidden="true" />
 			<div className="home-cursor-glow" aria-hidden="true" />
 			<BackgroundTransitionOverlay isLeavingHome={isLeavingHome} />
 			<FloatingParticles isLeavingHome={isLeavingHome} />
@@ -230,7 +183,7 @@ export default function App() {
 			<ScheduleSection />
 			<CommunitySection handleLinkClick={handleLinkClick} />
 			<FooterSection handleLinkClick={handleLinkClick} />
-		</div>
+		</SpotlightBackground>
 	)
 }
 
