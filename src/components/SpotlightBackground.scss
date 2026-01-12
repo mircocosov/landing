@@ -1,0 +1,84 @@
+$milk-color: rgba(255, 255, 255, 0.72);
+
+.wrap {
+	--mx: 50%;
+	--my: 50%;
+	--r: 180px;
+	--fade: 80px;
+	--bg-url: none;
+
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	min-height: 100vh;
+	background-color: #f3f4f7;
+}
+
+.milk,
+.photo {
+	position: absolute;
+	inset: 0;
+}
+
+.milk {
+	background: $milk-color;
+	backdrop-filter: blur(6px);
+	pointer-events: none;
+}
+
+.photo {
+	background-image: var(--bg-url);
+	background-size: cover;
+	background-position: center;
+	pointer-events: none;
+
+	-webkit-mask-image: radial-gradient(
+		circle at var(--mx) var(--my),
+		rgba(0, 0, 0, 1) calc(var(--r) - var(--fade)),
+		rgba(0, 0, 0, 0) var(--r)
+	);
+	mask-image: radial-gradient(
+		circle at var(--mx) var(--my),
+		rgba(0, 0, 0, 1) calc(var(--r) - var(--fade)),
+		rgba(0, 0, 0, 0) var(--r)
+	);
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	transition: -webkit-mask-image 120ms ease, mask-image 120ms ease;
+}
+
+.content {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	text-align: center;
+	padding: 2rem;
+}
+
+@supports not (
+	mask-image: radial-gradient(circle at 50% 50%, #000 0, transparent 100%)
+) {
+	.photo {
+		-webkit-mask-image: none;
+		mask-image: none;
+		clip-path: circle(var(--r) at var(--mx) var(--my));
+		transition: clip-path 120ms ease;
+	}
+}
+
+@supports not (clip-path: circle(10px at 50% 50%)) {
+	@supports not (
+		mask-image: radial-gradient(circle at 50% 50%, #000 0, transparent 100%)
+	) {
+		.photo {
+			display: none;
+		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.photo {
+		transition: none;
+	}
+}
