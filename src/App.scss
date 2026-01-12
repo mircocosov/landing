@@ -30,6 +30,18 @@ $neon-pink-light: #f472b6;
 	initial-value: 0px;
 }
 
+@property --reveal-x {
+	syntax: "<length-percentage>";
+	inherits: true;
+	initial-value: 50%;
+}
+
+@property --reveal-y {
+	syntax: "<length-percentage>";
+	inherits: true;
+	initial-value: 50%;
+}
+
 .home-page-neon {
 	position: relative;
 	min-height: 100vh;
@@ -42,6 +54,7 @@ $neon-pink-light: #f472b6;
 	--reveal-x: 50%;
 	--reveal-y: 50%;
 	--reveal-size: 0px;
+	--reveal-active: 0;
 }
 
 .home-animated-gradient,
@@ -1380,9 +1393,13 @@ html {
 		#000 100%
 	);
 	transition: --reveal-size 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-		opacity 0.3s ease;
-	opacity: 1;
-	will-change: mask-image, -webkit-mask-image;
+		--reveal-x 0.25s ease, --reveal-y 0.25s ease, opacity 0.3s ease;
+	opacity: calc(1 - (var(--reveal-active, 0) * 0.55));
+	will-change: mask-image, -webkit-mask-image, opacity;
+	@media (hover: none) {
+		opacity: 1;
+		--reveal-size: 0px;
+	}
 }
 
 .home-cursor-glow {
