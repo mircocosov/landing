@@ -145,7 +145,7 @@ export default function App() {
 			"--reveal-y",
 			`${event.clientY}px`
 		)
-		containerRef.current.style.setProperty("--reveal-size", "600px")
+		containerRef.current.style.setProperty("--reveal-size", "520px")
 	}, [])
 
 	const handleMouseLeave = useCallback(() => {
@@ -153,6 +153,7 @@ export default function App() {
 			return
 		}
 		containerRef.current.style.setProperty("--cursor-active", "0")
+		containerRef.current.style.setProperty("--reveal-size", "0px")
 	}, [])
 
 	return (
