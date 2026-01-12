@@ -1,17 +1,17 @@
-$bg: #050508;
-$surface-primary: rgba(12, 12, 16, 0.9);
-$surface-secondary: rgba(14, 14, 20, 0.9);
-$elevated: rgba(5, 5, 8, 0.85);
-$panel: rgba(8, 8, 12, 0.95);
+$bg: #f6f1e8;
+$surface-primary: rgba(252, 246, 238, 0.92);
+$surface-secondary: rgba(249, 242, 232, 0.9);
+$elevated: rgba(250, 244, 236, 0.9);
+$panel: rgba(247, 240, 230, 0.95);
 
-$text-primary: rgba(246, 241, 211, 0.95);
-$text-secondary: rgba(246, 241, 211, 0.75);
-$text-muted: rgba(246, 241, 211, 0.6);
-$border-soft: rgba(255, 255, 255, 0.08);
-$border-strong: rgba(248, 211, 117, 0.6);
+$text-primary: rgba(58, 49, 39, 0.95);
+$text-secondary: rgba(58, 49, 39, 0.75);
+$text-muted: rgba(58, 49, 39, 0.6);
+$border-soft: rgba(104, 90, 76, 0.12);
+$border-strong: rgba(199, 165, 120, 0.6);
 
-$accent: #f8d375;
-$accent-dark: #f0b755;
+$accent: #e2c193;
+$accent-dark: #cc9f6a;
 $accent-gradient: linear-gradient(135deg, $accent, $accent-dark);
 
 $xl: 32px;
@@ -19,10 +19,10 @@ $lg: 28px;
 $md: 18px;
 $sm: 12px;
 $pill: 999px;
-$neon-purple: #8b5cf6;
-$neon-pink: #ec4899;
-$neon-purple-light: #a78bfa;
-$neon-pink-light: #f472b6;
+$neon-purple: #c7b3a4;
+$neon-pink: #e6b9aa;
+$neon-purple-light: #ddcfc2;
+$neon-pink-light: #f3d6c6;
 
 @property --reveal-size {
 	syntax: "<length>";
@@ -46,7 +46,7 @@ $neon-pink-light: #f472b6;
 	position: relative;
 	min-height: 100vh;
 	width: 100%;
-	background: #030303;
+	background: $bg;
 	color: #2a2a2a;
 	overflow-x: hidden;
 	margin: 0;
@@ -93,7 +93,7 @@ body:has(.home-page-neon) .page-container,
 body:has(.home-page-neon),
 .app-shell:has(.home-page-neon),
 .page-container:has(.home-page-neon) {
-	background: #030303;
+	background: $bg;
 }
 
 // Mouse glow effect
@@ -121,9 +121,9 @@ body:has(.home-page-neon),
 	background: rgba(245, 245, 240, 0.9);
 	backdrop-filter: blur(20px);
 	-webkit-backdrop-filter: blur(20px);
-	border: 1px solid rgba(139, 92, 246, 0.2);
+	border: 1px solid rgba(199, 165, 120, 0.28);
 	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1),
-		0 0 20px rgba(139, 92, 246, 0.1);
+		0 0 20px rgba(214, 190, 156, 0.2);
 }
 
 // Hero Section
@@ -1308,20 +1308,19 @@ html {
 }
 
 .home-page-neon {
-	transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.25s,
-		background-image 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.25s;
+	transition: background 0.4s ease, background-image 0.4s ease;
 }
 
 .home-page-leaving {
-	background: #050508 !important;
+	background: #f3ede2 !important;
 	background-image: radial-gradient(
 			circle at 20% 20%,
-			rgba(59, 59, 65, 0.4),
+			rgba(210, 192, 170, 0.45),
 			transparent 50%
 		),
 		radial-gradient(
 			circle at 80% 0%,
-			rgba(255, 210, 84, 0.2),
+			rgba(235, 204, 155, 0.4),
 			transparent 45%
 		) !important;
 }
@@ -1332,15 +1331,15 @@ html {
 	z-index: 1000;
 	background: radial-gradient(
 			circle at 20% 20%,
-			rgba(59, 59, 65, 0.4),
+			rgba(210, 192, 170, 0.45),
 			transparent 50%
 		),
 		radial-gradient(
 			circle at 80% 0%,
-			rgba(255, 210, 84, 0.2),
+			rgba(235, 204, 155, 0.4),
 			transparent 45%
 		),
-		#050508;
+		#f3ede2;
 	pointer-events: none;
 }
 
@@ -1367,7 +1366,7 @@ html {
 	width: 100%;
 	height: 100%;
 	z-index: 1;
-	background-color: #f5f1e6;
+	background-color: #f7f2e8;
 	pointer-events: none;
 	--reveal-size: 0px;
 	mask-image: radial-gradient(
@@ -1392,8 +1391,8 @@ html {
 		rgba(0, 0, 0, 0.9) 80%,
 		#000 100%
 	);
-	transition: --reveal-size 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-		--reveal-x 0.25s ease, --reveal-y 0.25s ease;
+	transition: --reveal-size 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+		--reveal-x 0.4s ease, --reveal-y 0.4s ease;
 	opacity: 1;
 	will-change: mask-image, -webkit-mask-image, opacity;
 	@media (hover: none) {
@@ -1403,20 +1402,7 @@ html {
 }
 
 .home-cursor-glow {
-	position: fixed;
-	inset: 0;
-	z-index: 0;
-	pointer-events: none;
-	background: radial-gradient(
-		circle 200px at var(--cursor-x) var(--cursor-y),
-		rgba(139, 92, 246, 0.5),
-		rgba(139, 92, 246, 0.3) 40%,
-		rgba(139, 92, 246, 0.1) 60%,
-		rgba(11, 11, 22, 0) 80%
-	);
-	mix-blend-mode: screen;
-	opacity: var(--cursor-active);
-	transition: none;
+	display: none;
 }
 
 .home-floating-particles-hidden {

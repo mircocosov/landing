@@ -1,4 +1,4 @@
-$milk-color: rgba(255, 255, 255, 0.72);
+$milk-color: rgba(247, 242, 232, 0.85);
 
 .wrap {
 	--mx: 50%;
@@ -11,7 +11,7 @@ $milk-color: rgba(255, 255, 255, 0.72);
 	overflow: hidden;
 	width: 100%;
 	min-height: 100vh;
-	background-color: #f3f4f7;
+	background-color: #f7f2e8;
 }
 
 .milk,
@@ -44,7 +44,7 @@ $milk-color: rgba(255, 255, 255, 0.72);
 	);
 	-webkit-mask-repeat: no-repeat;
 	mask-repeat: no-repeat;
-	transition: -webkit-mask-image 120ms ease, mask-image 120ms ease;
+	transition: -webkit-mask-image 0.4s ease, mask-image 0.4s ease;
 }
 
 .content {
@@ -61,7 +61,7 @@ $milk-color: rgba(255, 255, 255, 0.72);
 		-webkit-mask-image: none;
 		mask-image: none;
 		clip-path: circle(var(--r) at var(--mx) var(--my));
-		transition: clip-path 120ms ease;
+		transition: clip-path 0.4s ease;
 	}
 }
 
