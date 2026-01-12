@@ -1,6 +1,6 @@
-import { memo, useCallback, useRef, useState } from "react"
+import { memo, useCallback, useEffect, useRef, useState } from "react"
 import type { MouseEvent, ReactNode } from "react"
-import "./App.css"
+import "./App.scss"
 
 const dasha1Image = "/dasha1.jpg"
 const dasha2Image = "/dasha2.jpg"
@@ -86,6 +86,33 @@ const schedule: ScheduleEntry[] = [
 export default function App() {
 	const [isLeavingHome] = useState(false)
 	const containerRef = useRef<HTMLDivElement | null>(null)
+	const backgroundRef = useRef<HTMLDivElement | null>(null)
+
+	useEffect(() => {
+		const updateBackgroundHeight = () => {
+			if (containerRef.current && backgroundRef.current) {
+				const height = containerRef.current.scrollHeight
+				backgroundRef.current.style.height = `${height}px`
+			}
+		}
+
+		updateBackgroundHeight()
+		window.addEventListener("resize", updateBackgroundHeight)
+		const observer = new MutationObserver(updateBackgroundHeight)
+
+		if (containerRef.current) {
+			observer.observe(containerRef.current, {
+				childList: true,
+				subtree: true,
+				attributes: true,
+			})
+		}
+
+		return () => {
+			window.removeEventListener("resize", updateBackgroundHeight)
+			observer.disconnect()
+		}
+	}, [])
 
 	const handleLinkClick = useCallback((e: MouseEvent<HTMLAnchorElement>) => {
 		e.preventDefault()
@@ -99,12 +126,26 @@ export default function App() {
 		if (!containerRef.current) {
 			return
 		}
-		const rect = containerRef.current.getBoundingClientRect()
-		const x = event.clientX - rect.left
-		const y = event.clientY - rect.top
-		containerRef.current.style.setProperty("--cursor-x", `${x}px`)
-		containerRef.current.style.setProperty("--cursor-y", `${y}px`)
+		// Используем clientX/Y напрямую для fixed позиционирования
+		containerRef.current.style.setProperty(
+			"--cursor-x",
+			`${event.clientX}px`
+		)
+		containerRef.current.style.setProperty(
+			"--cursor-y",
+			`${event.clientY}px`
+		)
 		containerRef.current.style.setProperty("--cursor-active", "1")
+		// Для эффекта reveal фона
+		containerRef.current.style.setProperty(
+			"--reveal-x",
+			`${event.clientX}px`
+		)
+		containerRef.current.style.setProperty(
+			"--reveal-y",
+			`${event.clientY}px`
+		)
+		containerRef.current.style.setProperty("--reveal-size", "600px")
 	}, [])
 
 	const handleMouseLeave = useCallback(() => {
@@ -123,7 +164,8 @@ export default function App() {
 			onMouseMove={handleMouseMove}
 			onMouseLeave={handleMouseLeave}
 		>
-			<div className="home-background-image" />
+			<div ref={backgroundRef} className="home-background-image" />
+			<div className="home-background-overlay" aria-hidden="true" />
 			<div className="home-cursor-glow" aria-hidden="true" />
 			<BackgroundTransitionOverlay isLeavingHome={isLeavingHome} />
 			<FloatingParticles isLeavingHome={isLeavingHome} />
