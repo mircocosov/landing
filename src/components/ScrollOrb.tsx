@@ -45,15 +45,14 @@ const ScrollOrb = ({
 		}
 
 		const target = {
-			x: window.innerWidth * 0.7,
-			y: window.innerHeight * 0.25,
+			x: window.innerWidth / 2,
+			y: window.innerHeight / 2,
 			active: 1,
 		}
 		const current = { ...target }
 		const easing = 0.12
 		let rafId: number | null = null
-		let motionId: number | null = null
-		const startTime = performance.now()
+		let scrollRafId: number | null = null
 
 		const metrics = {
 			imageWidth: 0,
@@ -65,6 +64,7 @@ const ScrollOrb = ({
 			containerWidth: 0,
 			containerHeight: 0,
 			isFixedAttachment: false,
+			rect: backgroundSource.getBoundingClientRect(),
 		}
 
 		const extractImageUrl = (value: string) => {
@@ -197,6 +197,7 @@ const ScrollOrb = ({
 			metrics.containerHeight = metrics.isFixedAttachment
 				? window.innerHeight
 				: rect.height
+			metrics.rect = rect
 
 			computeDrawnSize(metrics.containerWidth, metrics.containerHeight)
 
@@ -218,14 +219,17 @@ const ScrollOrb = ({
 			orbBg.style.backgroundSize = `${metrics.drawnWidth}px ${metrics.drawnHeight}px`
 		}
 
+		const updateBackgroundRect = () => {
+			metrics.rect = backgroundSource.getBoundingClientRect()
+		}
+
 		const updateBackgroundPosition = () => {
-			const rect = backgroundSource.getBoundingClientRect()
 			const localX = metrics.isFixedAttachment
 				? current.x
-				: current.x - rect.left
+				: current.x - metrics.rect.left
 			const localY = metrics.isFixedAttachment
 				? current.y
-				: current.y - rect.top
+				: current.y - metrics.rect.top
 			const bgX = metrics.offsetX - localX + size / 2
 			const bgY = metrics.offsetY - localY + size / 2
 			orbBg.style.backgroundPosition = `${bgX}px ${bgY}px`
@@ -290,35 +294,40 @@ const ScrollOrb = ({
 			rafId = requestAnimationFrame(applyPosition)
 		}
 
-		const updateTarget = (now: number) => {
-			const elapsed = (now - startTime) / 1000
+		const updateTargetFromScroll = () => {
+			const scrollY = window.scrollY
 			const amplitudeX = Math.min(220, window.innerWidth * 0.25)
-			const amplitudeY = Math.min(120, window.innerHeight * 0.18)
 			const centerX = window.innerWidth / 2
 			const centerY = window.innerHeight / 2
-			target.x = centerX + Math.sin(elapsed * 0.8) * amplitudeX
-			target.y = centerY + Math.cos(elapsed * 0.6) * amplitudeY
+			const phase = scrollY * 0.004
+			target.x = centerX + Math.sin(phase) * amplitudeX
+			target.y = centerY
 			target.active = 1
 			scheduleUpdate()
 		}
 
-		const animateMotion = (now: number) => {
-			updateTarget(now)
-			motionId = requestAnimationFrame(animateMotion)
+		const handleScroll = () => {
+			if (scrollRafId !== null) return
+			scrollRafId = requestAnimationFrame(() => {
+				scrollRafId = null
+				updateBackgroundRect()
+				updateTargetFromScroll()
+			})
 		}
 
 		const handleResize = () => {
 			updateMetrics()
-			updateTarget(performance.now())
+			updateTargetFromScroll()
 		}
 
-		motionId = requestAnimationFrame(animateMotion)
-
+		updateTargetFromScroll()
+		window.addEventListener("scroll", handleScroll, { passive: true })
 		window.addEventListener("resize", handleResize)
 
 		return () => {
 			if (rafId !== null) cancelAnimationFrame(rafId)
-			if (motionId !== null) cancelAnimationFrame(motionId)
+			if (scrollRafId !== null) cancelAnimationFrame(scrollRafId)
+			window.removeEventListener("scroll", handleScroll)
 			window.removeEventListener("resize", handleResize)
 		}
 	}, [size, backgroundImage])
