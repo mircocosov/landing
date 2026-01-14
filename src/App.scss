@@ -4,9 +4,9 @@ $surface-secondary: rgba(251, 246, 239, 0.92);
 $elevated: rgba(252, 247, 241, 0.92);
 $panel: rgba(249, 243, 235, 0.97);
 
-$text-primary: #2b211b;
-$text-secondary: rgba(43, 33, 27, 0.78);
-$text-muted: rgba(43, 33, 27, 0.58);
+$text-primary: #9b7d66;
+$text-secondary: rgba(155, 125, 102, 0.78);
+$text-muted: rgba(155, 125, 102, 0.58);
 $border-soft: rgba(110, 96, 84, 0.1);
 $border-strong: rgba(200, 178, 150, 0.45);
 
@@ -25,7 +25,6 @@ $neon-purple-light: #e1cfc4;
 $neon-pink-light: #ecd6cb;
 
 * {
-	overflow: auto;
 	scrollbar-width: none;
 }
 
