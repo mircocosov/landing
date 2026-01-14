@@ -50,13 +50,11 @@ const SpotlightBackground = ({
 	const wrapRef = useRef<HTMLDivElement | null>(null)
 	const rafIdRef = useRef<number | null>(null)
 	const latestPointRef = useRef({ x: -9999, y: -9999, alpha: 0 })
-	const latestPointRef = useRef({ x: -9999, y: -9999, alpha: 0 })
 
 	const applyPosition = useCallback(() => {
 		rafIdRef.current = null
 		const node = wrapRef.current
 		if (!node) return
-		const { x, y, alpha } = latestPointRef.current
 		setCssVars(node, { x, y, radius, fade, alpha })
 		const { x, y, alpha } = latestPointRef.current
 		setCssVars(node, {
@@ -81,7 +79,6 @@ const SpotlightBackground = ({
 			latestPointRef.current = {
 				x: event.clientX - rect.left,
 				y: event.clientY - rect.top,
-				alpha: 1,
 				alpha: 1,
 			}
 			scheduleUpdate()
@@ -148,7 +145,6 @@ const SpotlightBackground = ({
 		"--bg-url": `url(${imageUrl})`,
 		"--r": `${radius}px`,
 		"--fade": `${fade}px`,
-		"--alpha": 0,
 		"--alpha": 0,
 		...style,
 	} as CSSProperties
