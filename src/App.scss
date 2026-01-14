@@ -1408,19 +1408,17 @@ html {
 	transform: translate3d(-9999px, -9999px, 0);
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 	transition: border-color 0.3s ease;
+	overflow: hidden;
 }
 
 .cursor-ring__bg {
 	position: absolute;
-	inset: 2px;
-	border-radius: 999px;
-	overflow: hidden;
-	background-image: var(--cursor-ring-background);
-	background-size: 100% auto;
-	background-position: calc(-1 * var(--cursor-x, 0px))
-		calc(-1 * var(--cursor-y, 0px));
+	inset: 0;
+	border-radius: inherit;
+	background-image: none;
+	background-size: cover;
+	background-position: 0 0;
 	background-repeat: no-repeat;
-	filter: saturate(1.05) brightness(1.02);
 	opacity: var(--cursor-active, 0);
 	transition: opacity 0.32s ease;
 }
