@@ -155,7 +155,7 @@ const SpotlightBackground = ({
 			style={styleVars}
 		>
 			<div className={styles.milk} />
-			<div className={styles.photo} />
+			<div className={styles.photo} data-cursor-ring-source="true" />
 			<div className={styles.content}>{children}</div>
 		</div>
 	)
