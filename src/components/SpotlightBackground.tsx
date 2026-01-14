@@ -34,6 +34,7 @@ const setCssVars = (
 	node.style.setProperty("--r", `${radius}px`)
 	node.style.setProperty("--fade", `${fade}px`)
 	node.style.setProperty("--alpha", `${alpha}`)
+	node.style.setProperty("--alpha", `${alpha}`)
 }
 
 const SpotlightBackground = ({
@@ -49,11 +50,14 @@ const SpotlightBackground = ({
 	const wrapRef = useRef<HTMLDivElement | null>(null)
 	const rafIdRef = useRef<number | null>(null)
 	const latestPointRef = useRef({ x: -9999, y: -9999, alpha: 0 })
+	const latestPointRef = useRef({ x: -9999, y: -9999, alpha: 0 })
 
 	const applyPosition = useCallback(() => {
 		rafIdRef.current = null
 		const node = wrapRef.current
 		if (!node) return
+		const { x, y, alpha } = latestPointRef.current
+		setCssVars(node, { x, y, radius, fade, alpha })
 		const { x, y, alpha } = latestPointRef.current
 		setCssVars(node, {
 			x,
@@ -78,6 +82,7 @@ const SpotlightBackground = ({
 				x: event.clientX - rect.left,
 				y: event.clientY - rect.top,
 				alpha: 1,
+				alpha: 1,
 			}
 			scheduleUpdate()
 			onPointerMove?.(event)
@@ -87,6 +92,10 @@ const SpotlightBackground = ({
 
 	const handlePointerLeave = useCallback(
 		(event: PointerEvent<HTMLDivElement>) => {
+			latestPointRef.current = {
+				...latestPointRef.current,
+				alpha: 0,
+			}
 			latestPointRef.current = {
 				...latestPointRef.current,
 				alpha: 0,
@@ -122,12 +131,24 @@ const SpotlightBackground = ({
 				alpha: 1,
 			})
 		})
+		latestPointRef.current = { x: centerX, y: centerY, alpha: 0 }
+		setCssVars(node, { x: centerX, y: centerY, radius, fade, alpha: 0 })
+		requestAnimationFrame(() => {
+			setCssVars(node, {
+				x: centerX,
+				y: centerY,
+				radius,
+				fade,
+				alpha: 1,
+			})
+		})
 	}, [radius, fade])
 
 	const styleVars: CSSProperties = {
 		"--bg-url": `url(${imageUrl})`,
 		"--r": `${radius}px`,
 		"--fade": `${fade}px`,
+		"--alpha": 0,
 		"--alpha": 0,
 		...style,
 	} as CSSProperties
