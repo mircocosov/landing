@@ -349,6 +349,11 @@ body:has(.home-page-neon),
 .home-button-icon {
 	width: 20px;
 	height: 20px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 22px;
+	line-height: 1;
 }
 
 .home-neon-button-text {
@@ -443,6 +448,8 @@ body:has(.home-page-neon),
 	align-items: center;
 	justify-content: center;
 	margin: 0 auto 24px;
+	font-size: 42px;
+	line-height: 1;
 }
 
 .home-section-icon {
@@ -530,6 +537,8 @@ body:has(.home-page-neon),
 	justify-content: center;
 	margin-bottom: 32px;
 	transition: transform 0.3s;
+	font-size: 36px;
+	line-height: 1;
 }
 
 .home-feature-icon-wrapper-purple {
@@ -697,6 +706,8 @@ body:has(.home-page-neon),
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	font-size: 36px;
+	line-height: 1;
 }
 
 .home-platform-icon-wrapper-purple {
@@ -813,6 +824,8 @@ body:has(.home-page-neon),
 	align-items: center;
 	justify-content: center;
 	transition: transform 0.3s;
+	font-size: 30px;
+	line-height: 1;
 }
 
 .home-schedule-icon-wrapper-purple {
@@ -837,6 +850,8 @@ body:has(.home-page-neon),
 	width: 28px;
 	height: 28px;
 	color: #fff;
+	font-size: 28px;
+	line-height: 1;
 }
 
 .home-schedule-day {
@@ -934,6 +949,8 @@ body:has(.home-page-neon),
 	width: 28px;
 	height: 28px;
 	color: $neon-purple-light;
+	font-size: 28px;
+	line-height: 1;
 }
 
 .home-community-cta-text {
@@ -1062,6 +1079,8 @@ body:has(.home-page-neon),
 	align-items: center;
 	justify-content: center;
 	@extend .glass-card;
+	font-size: 28px;
+	line-height: 1;
 
 	svg {
 		width: 24px;
