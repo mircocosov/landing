@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from "react"
 import type { CSSProperties, PointerEvent, ReactNode } from "react"
 import styles from "./SpotlightBackground.module.scss"
 
-const DEFAULT_RADIUS = 270
+const DEFAULT_RADIUS = 330
 const DEFAULT_FADE = 80
 
 type SpotlightVars = {
@@ -62,7 +62,8 @@ const SpotlightBackground = ({
 		const target = targetPointRef.current
 		const nextX = current.x + (target.x - current.x) * easing
 		const nextY = current.y + (target.y - current.y) * easing
-		const nextAlpha = current.alpha + (target.alpha - current.alpha) * easing
+		const nextAlpha =
+			current.alpha + (target.alpha - current.alpha) * easing
 		currentPointRef.current = { x: nextX, y: nextY, alpha: nextAlpha }
 		setCssVars(node, {
 			x: nextX,
