@@ -1,17 +1,17 @@
-$bg: #f6f1e8;
-$surface-primary: rgba(252, 246, 238, 0.92);
-$surface-secondary: rgba(249, 242, 232, 0.9);
-$elevated: rgba(250, 244, 236, 0.9);
-$panel: rgba(247, 240, 230, 0.95);
+$bg: #fbf7f1;
+$surface-primary: rgba(254, 250, 244, 0.94);
+$surface-secondary: rgba(251, 246, 239, 0.92);
+$elevated: rgba(252, 247, 241, 0.92);
+$panel: rgba(249, 243, 235, 0.97);
 
-$text-primary: #2a1f18;
-$text-secondary: rgba(42, 31, 24, 0.82);
-$text-muted: rgba(42, 31, 24, 0.64);
-$border-soft: rgba(104, 90, 76, 0.12);
-$border-strong: rgba(199, 165, 120, 0.6);
+$text-primary: #2b211b;
+$text-secondary: rgba(43, 33, 27, 0.78);
+$text-muted: rgba(43, 33, 27, 0.58);
+$border-soft: rgba(110, 96, 84, 0.1);
+$border-strong: rgba(200, 178, 150, 0.45);
 
-$accent: #e2c193;
-$accent-dark: #cc9f6a;
+$accent: #e9d6c2;
+$accent-dark: #d8bfa5;
 $accent-gradient: linear-gradient(135deg, $accent, $accent-dark);
 
 $xl: 32px;
@@ -19,10 +19,10 @@ $lg: 28px;
 $md: 18px;
 $sm: 12px;
 $pill: 999px;
-$neon-purple: #9b6f5a;
-$neon-pink: #c5826c;
-$neon-purple-light: #c8ab9b;
-$neon-pink-light: #ddb2a1;
+$neon-purple: #c9aa9a;
+$neon-pink: #e0b9a9;
+$neon-purple-light: #e1cfc4;
+$neon-pink-light: #ecd6cb;
 
 * {
 	overflow: auto;
@@ -218,8 +218,8 @@ body:has(.home-page-neon),
 
 .home-hero-title-gradient {
 	color: $text-primary;
-	background: none;
-	-webkit-text-fill-color: $text-primary;
+	background: transparent;
+	-webkit-text-fill-color: currentColor;
 	animation: none;
 }
 
@@ -616,13 +616,13 @@ body:has(.home-page-neon),
 	object-fit: cover;
 	object-position: center;
 	display: block;
-	filter: brightness(0.7) contrast(1.1) saturate(1.2);
+	filter: brightness(0.9) contrast(1.05) saturate(1.1);
 	transition: transform 0.5s ease, filter 0.5s ease;
 }
 
 .home-platform-card:hover .home-platform-image {
 	transform: scale(1.05);
-	filter: brightness(0.8) contrast(1.15) saturate(1.3);
+	filter: brightness(0.95) contrast(1.08) saturate(1.15);
 }
 
 .home-platform-overlay {
@@ -630,9 +630,9 @@ body:has(.home-page-neon),
 	inset: 0;
 	background: linear-gradient(
 			to top,
-			rgba(0, 0, 0, 0.95) 0%,
-			rgba(0, 0, 0, 0.7) 40%,
-			rgba(0, 0, 0, 0.3) 70%,
+			rgba(0, 0, 0, 0.7) 0%,
+			rgba(0, 0, 0, 0.45) 40%,
+			rgba(0, 0, 0, 0.18) 70%,
 			transparent 100%
 		),
 		radial-gradient(
@@ -648,9 +648,9 @@ body:has(.home-page-neon),
 	opacity: 0.9;
 	background: linear-gradient(
 			to top,
-			rgba(0, 0, 0, 0.9) 0%,
-			rgba(0, 0, 0, 0.6) 40%,
-			rgba(0, 0, 0, 0.2) 70%,
+			rgba(0, 0, 0, 0.6) 0%,
+			rgba(0, 0, 0, 0.4) 40%,
+			rgba(0, 0, 0, 0.15) 70%,
 			transparent 100%
 		),
 		radial-gradient(
