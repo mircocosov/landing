@@ -320,16 +320,19 @@ const ScrollOrb = ({
 			scrollRafId = requestAnimationFrame(() => {
 				scrollRafId = null
 				updateBackgroundRect()
-				updateTargetFromScroll()
+				scrollState.targetY = window.scrollY
+				scheduleUpdate()
 			})
 		}
 
 		const handleResize = () => {
 			updateMetrics()
-			updateTargetFromScroll()
+			updateTargetFromScroll(scrollState.currentY)
+			scheduleUpdate()
 		}
 
-		updateTargetFromScroll()
+		updateTargetFromScroll(scrollState.currentY)
+		scheduleUpdate()
 		window.addEventListener("scroll", handleScroll, { passive: true })
 		window.addEventListener("resize", handleResize)
 

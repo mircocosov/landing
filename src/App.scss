@@ -24,6 +24,15 @@ $neon-pink: #c5826c;
 $neon-purple-light: #c8ab9b;
 $neon-pink-light: #ddb2a1;
 
+* {
+	overflow: auto;
+	scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+	display: none;
+}
+
 @property --reveal-size {
 	syntax: "<length>";
 	inherits: true;
