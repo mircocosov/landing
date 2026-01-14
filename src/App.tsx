@@ -167,15 +167,6 @@ export default function App() {
 						/>
 					</div>
 				</div>
-
-				<div className="home-scroll-indicator">
-					<div className="home-scroll-indicator-content">
-						<span className="home-scroll-text">scroll</span>
-						<div className="home-scroll-mouse">
-							<div className="home-scroll-dot" />
-						</div>
-					</div>
-				</div>
 			</section>
 
 			<AboutSection />
