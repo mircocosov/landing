@@ -6,7 +6,7 @@ type ScrollOrbProps = {
 	backgroundImage: string
 }
 
-const DEFAULT_SIZE = 330
+const DEFAULT_SIZE = 540
 
 const isCoarsePointer = () =>
 	window.matchMedia("(pointer: coarse)").matches ||
@@ -51,8 +51,13 @@ const ScrollOrb = ({
 		}
 		const current = { ...target }
 		const easing = 0.12
+		const scrollEasing = 0.08
 		let rafId: number | null = null
 		let scrollRafId: number | null = null
+		const scrollState = {
+			currentY: window.scrollY,
+			targetY: window.scrollY,
+		}
 
 		const metrics = {
 			imageWidth: 0,
@@ -254,6 +259,10 @@ const ScrollOrb = ({
 		updateMetrics()
 
 		const applyPosition = () => {
+			scrollState.currentY +=
+				(scrollState.targetY - scrollState.currentY) * scrollEasing
+			updateTargetFromScroll(scrollState.currentY)
+
 			const nextX = current.x + (target.x - current.x) * easing
 			const nextY = current.y + (target.y - current.y) * easing
 			const nextActive =
@@ -271,12 +280,14 @@ const ScrollOrb = ({
 
 			const isSettled =
 				Math.abs(nextX - target.x) < 0.3 &&
-				Math.abs(nextY - target.y) < 0.3
+				Math.abs(nextY - target.y) < 0.3 &&
+				Math.abs(scrollState.targetY - scrollState.currentY) < 0.5
 
 			if (isSettled) {
 				current.x = target.x
 				current.y = target.y
 				current.active = target.active
+				scrollState.currentY = scrollState.targetY
 				orb.style.transform = `translate3d(${target.x - size / 2}px, ${
 					target.y - size / 2
 				}px, 0)`
@@ -294,16 +305,14 @@ const ScrollOrb = ({
 			rafId = requestAnimationFrame(applyPosition)
 		}
 
-		const updateTargetFromScroll = () => {
-			const scrollY = window.scrollY
-			const amplitudeX = Math.min(220, window.innerWidth * 0.25)
+		const updateTargetFromScroll = (scrollY: number) => {
+			const amplitudeX = window.innerWidth * 0.35
 			const centerX = window.innerWidth / 2
 			const centerY = window.innerHeight / 2
 			const phase = scrollY * 0.004
 			target.x = centerX + Math.sin(phase) * amplitudeX
 			target.y = centerY
 			target.active = 1
-			scheduleUpdate()
 		}
 
 		const handleScroll = () => {
