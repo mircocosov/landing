@@ -1395,6 +1395,38 @@ html {
 	display: none;
 }
 
+.cursor-ring {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	width: var(--cursor-ring-size, 64px);
+	height: var(--cursor-ring-size, 64px);
+	border-radius: 999px;
+	pointer-events: none;
+	transform: translate3d(-9999px, -9999px, 0);
+}
+
+.cursor-ring__bg {
+	position: absolute;
+	inset: 0;
+	border-radius: 999px;
+	overflow: hidden;
+	background-image: var(--cursor-ring-background);
+	background-size: cover;
+	background-position: center top;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	opacity: var(--cursor-active, 0);
+	transition: opacity 0.32s ease;
+}
+
+@media (hover: none), (pointer: coarse) {
+	.cursor-ring {
+		display: none;
+	}
+}
+
 .home-floating-particles-hidden {
 	opacity: 0;
 	pointer-events: none;
