@@ -141,7 +141,10 @@ export default function App() {
 						<div className="home-hero-glow-1" />
 						<div className="home-hero-glow-2" />
 						<h1 className="home-hero-title">
-							<span className="home-hero-title-gradient">
+							<span
+								className="home-hero-title-gradient"
+								data-text="euphoria room"
+							>
 								euphoria room
 							</span>
 						</h1>
