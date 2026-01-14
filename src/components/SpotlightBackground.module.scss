@@ -1,10 +1,17 @@
 $milk-color: rgba(247, 242, 232, 0.85);
 
+@property --alpha {
+	syntax: "<number>";
+	inherits: true;
+	initial-value: 0;
+}
+
 .wrap {
 	--mx: 50%;
 	--my: 50%;
 	--r: 180px;
 	--fade: 80px;
+	--alpha: 0;
 	--bg-url: none;
 
 	position: relative;
@@ -34,17 +41,17 @@ $milk-color: rgba(247, 242, 232, 0.85);
 
 	-webkit-mask-image: radial-gradient(
 		circle at var(--mx) var(--my),
-		rgba(0, 0, 0, 1) calc(var(--r) - var(--fade)),
+		rgba(0, 0, 0, var(--alpha)) calc(var(--r) - var(--fade)),
 		rgba(0, 0, 0, 0) var(--r)
 	);
 	mask-image: radial-gradient(
 		circle at var(--mx) var(--my),
-		rgba(0, 0, 0, 1) calc(var(--r) - var(--fade)),
+		rgba(0, 0, 0, var(--alpha)) calc(var(--r) - var(--fade)),
 		rgba(0, 0, 0, 0) var(--r)
 	);
 	-webkit-mask-repeat: no-repeat;
 	mask-repeat: no-repeat;
-	transition: -webkit-mask-image 0.4s ease, mask-image 0.4s ease;
+	transition: --alpha 0.6s ease;
 }
 
 .content {
@@ -61,7 +68,8 @@ $milk-color: rgba(247, 242, 232, 0.85);
 		-webkit-mask-image: none;
 		mask-image: none;
 		clip-path: circle(var(--r) at var(--mx) var(--my));
-		transition: clip-path 0.4s ease;
+		opacity: var(--alpha);
+		transition: opacity 0.6s ease;
 	}
 }
 
