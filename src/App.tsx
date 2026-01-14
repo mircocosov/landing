@@ -154,19 +154,27 @@ export default function App() {
 
 					<div className="home-hero-buttons">
 						<NeonButton
-							icon="🎮"
+							icon="🕹️"
 							text="TWITCH"
 							href="https://twitch.tv/euphoria_room"
 							color="purple"
 							onClick={handleLinkClick}
 						/>
 						<NeonButton
-							icon="📹"
+							icon="🎥"
 							text="VK ВИДЕО"
 							href="https://live.vkplay.ru/euphoria_room"
 							color="pink"
 							onClick={handleLinkClick}
 						/>
+					</div>
+					<div className="home-scroll-indicator" aria-hidden="true">
+						<span className="home-scroll-indicator-label">
+							scroll
+						</span>
+						<span className="home-scroll-indicator-mouse">
+							<span className="home-scroll-indicator-dot" />
+						</span>
 					</div>
 				</div>
 			</section>
@@ -225,16 +233,16 @@ const NeonGrid = memo(({ isLeavingHome }: LeavingHomeProps) => (
 const AboutSection = memo(() => (
 	<section>
 		<div className="home-section-container">
-			<SectionTitle icon="⭐">атмосфера стрима</SectionTitle>
+			<SectionTitle icon="✨">атмосфера стрима</SectionTitle>
 			<div className="home-features-grid">
 				<FeatureCard
-					icon="🎵"
+					icon="🎧"
 					title="chill vibes"
 					description="расслабляющая атмосфера, где можно отдохнуть от суеты и насладиться спокойным общением"
 					color="purple"
 				/>
 				<FeatureCard
-					icon="❤️"
+					icon="💖"
 					title="тёплое комьюнити"
 					description="дружная компания, где каждый найдёт своё место и почувствует себя как дома"
 					color="pink"
@@ -247,11 +255,11 @@ const AboutSection = memo(() => (
 const PlatformsSection = memo(({ handleLinkClick }: PlatformsSectionProps) => (
 	<section>
 		<div className="home-section-container">
-			<SectionTitle icon="📺">где меня найти</SectionTitle>
+			<SectionTitle icon="🧭">где меня найти</SectionTitle>
 			<div className="home-platforms-grid">
 				<PlatformCard
 					platform="Twitch"
-					icon="🎮"
+					icon="🕹️"
 					description="основная площадка для стримов с интерактивным чатом"
 					image={dasha1Image}
 					color="purple"
@@ -260,7 +268,7 @@ const PlatformsSection = memo(({ handleLinkClick }: PlatformsSectionProps) => (
 				/>
 				<PlatformCard
 					platform="VK Видео"
-					icon="📹"
+					icon="🎥"
 					description="альтернативная площадка и записи стримов"
 					image={dasha2Image}
 					color="pink"
@@ -269,7 +277,7 @@ const PlatformsSection = memo(({ handleLinkClick }: PlatformsSectionProps) => (
 				/>
 				<PlatformCard
 					platform="Boosty"
-					icon="📸"
+					icon="🌟"
 					description="косплеи, влоги из жизни и другой эксклюзивный контент"
 					image={dasha3Image}
 					color="purple"
@@ -284,7 +292,7 @@ const PlatformsSection = memo(({ handleLinkClick }: PlatformsSectionProps) => (
 const ScheduleSection = memo(() => (
 	<section>
 		<div className="home-section-container home-section-schedule">
-			<SectionTitle icon="📅">расписание</SectionTitle>
+			<SectionTitle icon="🗓️">расписание</SectionTitle>
 			<div className="home-schedule-list">
 				{schedule.map((stream, index) => (
 					<ScheduleItem
@@ -301,7 +309,7 @@ const ScheduleSection = memo(() => (
 const CommunitySection = memo(({ handleLinkClick }: PlatformsSectionProps) => (
 	<section>
 		<div className="home-section-container">
-			<SectionTitle icon="👥">вайб комьюнити</SectionTitle>
+			<SectionTitle icon="🤝">вайб комьюнити</SectionTitle>
 			<div className="home-community-wrapper">
 				<div className="home-community-card">
 					<div className="home-community-border" />
@@ -324,7 +332,7 @@ const CommunitySection = memo(({ handleLinkClick }: PlatformsSectionProps) => (
 								onClick={handleLinkClick}
 							>
 								<span className="home-community-cta-icon">
-									👥
+									💌
 								</span>
 								<span className="home-community-cta-text">
 									присоединяйся к нам
@@ -351,13 +359,13 @@ const FooterSection = memo(({ handleLinkClick }: PlatformsSectionProps) => (
 				<p className="home-footer-subtitle">ловим вайб каждый день</p>
 				<div className="home-footer-social">
 					<SocialLink
-						icon="🎮"
+						icon="🕹️"
 						href="https://twitch.tv/euphoria_room"
 						color="purple"
 						onClick={handleLinkClick}
 					/>
 					<SocialLink
-						icon="📹"
+						icon="🎥"
 						href="https://live.vkplay.ru/euphoria_room"
 						color="pink"
 						onClick={handleLinkClick}
@@ -503,7 +511,7 @@ function ScheduleItem({ day, type, color, delay }: ScheduleItemProps) {
 				<div
 					className={`home-schedule-icon-wrapper home-schedule-icon-wrapper-${color}`}
 				>
-					<span className="home-schedule-icon">📅</span>
+					<span className="home-schedule-icon">🗓️</span>
 				</div>
 				<div>
 					<h4 className="home-schedule-day">{day}</h4>
