@@ -6,13 +6,16 @@ type CursorRingProps = {
 	backgroundImage: string
 }
 
-const DEFAULT_SIZE = 64
+const DEFAULT_SIZE = 140
 
 const isCoarsePointer = () =>
 	window.matchMedia("(pointer: coarse)").matches ||
 	window.matchMedia("(hover: none)").matches
 
-const CursorRing = ({ size = DEFAULT_SIZE, backgroundImage }: CursorRingProps) => {
+const CursorRing = ({
+	size = DEFAULT_SIZE,
+	backgroundImage,
+}: CursorRingProps) => {
 	const ringRef = useRef<HTMLDivElement | null>(null)
 
 	useEffect(() => {
@@ -69,7 +72,8 @@ const CursorRing = ({ size = DEFAULT_SIZE, backgroundImage }: CursorRingProps) =
 
 		const resolvePositionToken = (token: string) => {
 			if (!token) return { type: "percent" as const, value: 0.5 }
-			if (token === "center") return { type: "percent" as const, value: 0.5 }
+			if (token === "center")
+				return { type: "percent" as const, value: 0.5 }
 			if (token === "left" || token === "top")
 				return { type: "percent" as const, value: 0 }
 			if (token === "right" || token === "bottom")
@@ -144,7 +148,11 @@ const CursorRing = ({ size = DEFAULT_SIZE, backgroundImage }: CursorRingProps) =
 			}
 
 			const parts = backgroundSize.split(/\s+/)
-			const sizeX = resolveSizeToken(parts[0], containerWidth, metrics.imageWidth)
+			const sizeX = resolveSizeToken(
+				parts[0],
+				containerWidth,
+				metrics.imageWidth
+			)
 			const sizeY = resolveSizeToken(
 				parts[1] ?? "auto",
 				containerHeight,
@@ -190,7 +198,8 @@ const CursorRing = ({ size = DEFAULT_SIZE, backgroundImage }: CursorRingProps) =
 
 			computeDrawnSize(metrics.containerWidth, metrics.containerHeight)
 
-			const positionTokens = backgroundStyles.backgroundPosition.split(/\s+/)
+			const positionTokens =
+				backgroundStyles.backgroundPosition.split(/\s+/)
 			const posXToken = positionTokens[0] ?? "50%"
 			const posYToken = positionTokens[1] ?? "50%"
 			metrics.offsetX = resolveOffset(
@@ -209,8 +218,12 @@ const CursorRing = ({ size = DEFAULT_SIZE, backgroundImage }: CursorRingProps) =
 
 		const updateBackgroundPosition = () => {
 			const rect = backgroundSource.getBoundingClientRect()
-			const localX = metrics.isFixedAttachment ? current.x : current.x - rect.left
-			const localY = metrics.isFixedAttachment ? current.y : current.y - rect.top
+			const localX = metrics.isFixedAttachment
+				? current.x
+				: current.x - rect.left
+			const localY = metrics.isFixedAttachment
+				? current.y
+				: current.y - rect.top
 			const bgX = metrics.offsetX - localX + size / 2
 			const bgY = metrics.offsetY - localY + size / 2
 			ringBg.style.backgroundPosition = `${bgX}px ${bgY}px`
