@@ -52,6 +52,8 @@ const ScrollOrb = ({
 		const current = { ...target }
 		const easing = 0.12
 		let rafId: number | null = null
+		let motionId: number | null = null
+		const startTime = performance.now()
 
 		const metrics = {
 			imageWidth: 0,
@@ -288,36 +290,35 @@ const ScrollOrb = ({
 			rafId = requestAnimationFrame(applyPosition)
 		}
 
-		const updateTarget = () => {
-			const scrollTop = window.scrollY
-			const amplitude = Math.min(220, window.innerWidth * 0.25)
+		const updateTarget = (now: number) => {
+			const elapsed = (now - startTime) / 1000
+			const amplitudeX = Math.min(220, window.innerWidth * 0.25)
+			const amplitudeY = Math.min(120, window.innerHeight * 0.18)
 			const centerX = window.innerWidth / 2
 			const centerY = window.innerHeight / 2
-			const wavelength = Math.max(window.innerHeight * 1.2, 1)
-			const phase = (scrollTop / wavelength) * Math.PI * 2
-			target.x = centerX + Math.sin(phase) * amplitude
-			target.y = centerY
+			target.x = centerX + Math.sin(elapsed * 0.8) * amplitudeX
+			target.y = centerY + Math.cos(elapsed * 0.6) * amplitudeY
 			target.active = 1
 			scheduleUpdate()
 		}
 
-		const handleScroll = () => {
-			updateTarget()
+		const animateMotion = (now: number) => {
+			updateTarget(now)
+			motionId = requestAnimationFrame(animateMotion)
 		}
 
 		const handleResize = () => {
 			updateMetrics()
-			updateTarget()
+			updateTarget(performance.now())
 		}
 
-		updateTarget()
+		motionId = requestAnimationFrame(animateMotion)
 
-		window.addEventListener("scroll", handleScroll, { passive: true })
 		window.addEventListener("resize", handleResize)
 
 		return () => {
 			if (rafId !== null) cancelAnimationFrame(rafId)
-			window.removeEventListener("scroll", handleScroll)
+			if (motionId !== null) cancelAnimationFrame(motionId)
 			window.removeEventListener("resize", handleResize)
 		}
 	}, [size, backgroundImage])
