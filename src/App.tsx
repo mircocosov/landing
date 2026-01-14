@@ -168,6 +168,14 @@ export default function App() {
 							onClick={handleLinkClick}
 						/>
 					</div>
+					<div className="home-scroll-indicator" aria-hidden="true">
+						<span className="home-scroll-indicator-label">
+							scroll
+						</span>
+						<span className="home-scroll-indicator-mouse">
+							<span className="home-scroll-indicator-dot" />
+						</span>
+					</div>
 				</div>
 			</section>
 
