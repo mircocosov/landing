@@ -1410,6 +1410,8 @@ html {
 	border-radius: 999px;
 	pointer-events: none;
 	transform: translate3d(-9999px, -9999px, 0);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+	transition: border-color 0.3s ease;
 	overflow: hidden;
 }
 
