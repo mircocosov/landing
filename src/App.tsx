@@ -122,7 +122,7 @@ export default function App() {
 			className={`home-page-neon ${
 				isLeavingHome ? "home-page-leaving" : ""
 			}`}
-			style={{ backgroundColor: "#030303" }}
+			style={{ backgroundColor: "#f6f1e8" }}
 			onPointerMove={handlePointerMove}
 			onPointerLeave={handlePointerLeave}
 		>

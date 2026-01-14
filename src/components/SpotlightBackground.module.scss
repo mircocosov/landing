@@ -1,17 +1,48 @@
-$milk-color: rgba(255, 255, 255, 0.72);
+$milk-color: rgba(247, 242, 232, 0.85);
+
+@property --mx {
+	syntax: "<length-percentage>";
+	inherits: true;
+	initial-value: 50%;
+}
+
+@property --my {
+	syntax: "<length-percentage>";
+	inherits: true;
+	initial-value: 50%;
+}
+
+@property --r {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0px;
+}
+
+@property --fade {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 80px;
+}
+
+@property --alpha {
+	syntax: "<number>";
+	inherits: true;
+	initial-value: 0;
+}
 
 .wrap {
 	--mx: 50%;
 	--my: 50%;
 	--r: 180px;
 	--fade: 80px;
+	--alpha: 0;
 	--bg-url: none;
 
 	position: relative;
 	overflow: hidden;
 	width: 100%;
 	min-height: 100vh;
-	background-color: #f3f4f7;
+	background-color: #f7f2e8;
 }
 
 .milk,
@@ -34,17 +65,19 @@ $milk-color: rgba(255, 255, 255, 0.72);
 
 	-webkit-mask-image: radial-gradient(
 		circle at var(--mx) var(--my),
-		rgba(0, 0, 0, 1) calc(var(--r) - var(--fade)),
+		rgba(0, 0, 0, var(--alpha)) calc(var(--r) - var(--fade)),
 		rgba(0, 0, 0, 0) var(--r)
 	);
 	mask-image: radial-gradient(
 		circle at var(--mx) var(--my),
-		rgba(0, 0, 0, 1) calc(var(--r) - var(--fade)),
+		rgba(0, 0, 0, var(--alpha)) calc(var(--r) - var(--fade)),
 		rgba(0, 0, 0, 0) var(--r)
 	);
 	-webkit-mask-repeat: no-repeat;
 	mask-repeat: no-repeat;
-	transition: -webkit-mask-image 120ms ease, mask-image 120ms ease;
+	transition: --mx 0.45s ease, --my 0.45s ease, --r 0.45s ease,
+		--fade 0.45s ease, --alpha 0.45s ease, -webkit-mask-image 0.4s ease,
+		mask-image 0.4s ease;
 }
 
 .content {
@@ -61,7 +94,7 @@ $milk-color: rgba(255, 255, 255, 0.72);
 		-webkit-mask-image: none;
 		mask-image: none;
 		clip-path: circle(var(--r) at var(--mx) var(--my));
-		transition: clip-path 120ms ease;
+		transition: clip-path 0.4s ease;
 	}
 }
 
