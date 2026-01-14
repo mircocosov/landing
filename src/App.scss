@@ -4,9 +4,9 @@ $surface-secondary: rgba(249, 242, 232, 0.9);
 $elevated: rgba(250, 244, 236, 0.9);
 $panel: rgba(247, 240, 230, 0.95);
 
-$text-primary: rgba(34, 26, 20, 0.98);
-$text-secondary: rgba(34, 26, 20, 0.86);
-$text-muted: rgba(34, 26, 20, 0.72);
+$text-primary: #2a1f18;
+$text-secondary: rgba(42, 31, 24, 0.82);
+$text-muted: rgba(42, 31, 24, 0.64);
 $border-soft: rgba(104, 90, 76, 0.12);
 $border-strong: rgba(199, 165, 120, 0.6);
 
@@ -65,6 +65,11 @@ $neon-pink-light: #ddb2a1;
 	--reveal-size: 0px;
 	--reveal-active: 0;
 	cursor: none;
+}
+
+.home-page-neon,
+.home-page-neon * {
+	text-shadow: none;
 }
 
 .home-page-neon * {
@@ -311,6 +316,7 @@ body:has(.home-page-neon),
 	position: relative;
 	animation: scroll-mouse-bob 2.2s ease-in-out infinite;
 	box-shadow: none;
+	margin-bottom: 6px;
 }
 
 .home-scroll-indicator-dot {
@@ -411,11 +417,6 @@ body:has(.home-page-neon),
 
 .home-neon-button-text {
 	color: $text-primary;
-}
-
-.home-neon-button-external {
-	width: 16px;
-	height: 16px;
 }
 
 // Section Container
@@ -565,12 +566,12 @@ body:has(.home-page-neon),
 	font-size: 1.875rem;
 	font-weight: 700;
 	margin: 0 0 16px;
-	color: #2a2a2a;
+	color: $text-primary;
 }
 
 .home-feature-description {
 	position: relative;
-	color: rgba(42, 42, 42, 0.8);
+	color: $text-secondary;
 	line-height: 1.7;
 	font-size: 1.125rem;
 	margin: 0;
@@ -1491,6 +1492,7 @@ html {
 	transition: opacity 0.6s ease, transform 0.6s ease;
 	mix-blend-mode: normal;
 	will-change: transform, opacity;
+	overflow: visible;
 	-webkit-mask-image: radial-gradient(
 		circle,
 		rgba(0, 0, 0, 1) 48%,
@@ -1504,6 +1506,32 @@ html {
 		rgba(0, 0, 0, 0.85) 58%,
 		rgba(0, 0, 0, 0.4) 74%,
 		transparent 100%
+	);
+}
+
+.cursor-ring__bg::before {
+	content: "";
+	position: absolute;
+	inset: -18px;
+	border-radius: inherit;
+	background-image: inherit;
+	background-size: inherit;
+	background-repeat: inherit;
+	background-position: inherit;
+	filter: blur(22px);
+	opacity: 0.65;
+	pointer-events: none;
+	-webkit-mask-image: radial-gradient(
+		circle,
+		transparent 52%,
+		rgba(0, 0, 0, 0.6) 68%,
+		#000 100%
+	);
+	mask-image: radial-gradient(
+		circle,
+		transparent 52%,
+		rgba(0, 0, 0, 0.6) 68%,
+		#000 100%
 	);
 }
 

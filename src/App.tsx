@@ -411,7 +411,6 @@ function NeonButton({ icon, text, href, color, onClick }: NeonButtonProps) {
 			>
 				<span className="home-button-icon">{icon}</span>
 				<span className="home-neon-button-text">{text}</span>
-				<span className="home-neon-button-external">↗</span>
 			</a>
 		</div>
 	)
