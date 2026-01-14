@@ -486,6 +486,12 @@ body:has(.home-page-neon),
 	@extend .glass-card;
 	transition: transform 0.3s;
 
+	&.home-feature-card-pink,
+	&.home-feature-card-purple {
+		background: rgba(238, 229, 220, 0.68);
+		border-color: rgba(200, 178, 150, 0.42);
+	}
+
 	&:hover {
 		transform: translateY(-4px);
 
@@ -767,6 +773,8 @@ body:has(.home-page-neon),
 	justify-content: space-between;
 	overflow: hidden;
 	@extend .glass-card;
+	background: rgba(238, 229, 220, 0.68);
+	border-color: rgba(200, 178, 150, 0.42);
 	z-index: 1;
 }
 
@@ -893,6 +901,8 @@ body:has(.home-page-neon),
 	border-radius: 24px;
 	overflow: hidden;
 	@extend .glass-card;
+	background: rgba(238, 229, 220, 0.68);
+	border-color: rgba(200, 178, 150, 0.42);
 }
 
 .home-community-border {
