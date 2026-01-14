@@ -1471,6 +1471,7 @@ html {
 	transform: translate3d(-9999px, -9999px, 0);
 	transition: border-color 0.3s ease;
 	overflow: hidden;
+	will-change: transform;
 }
 
 .scroll-orb {
@@ -1484,6 +1485,7 @@ html {
 	pointer-events: none;
 	transform: translate3d(-9999px, -9999px, 0);
 	overflow: hidden;
+	will-change: transform;
 }
 
 .mirror-orb::before,
@@ -1530,6 +1532,7 @@ html {
 	filter: none;
 	transition: opacity 0.6s ease, transform 0.6s ease;
 	mix-blend-mode: normal;
+	will-change: transform, opacity;
 	-webkit-mask-image: radial-gradient(
 		circle,
 		rgba(0, 0, 0, 1) 48%,

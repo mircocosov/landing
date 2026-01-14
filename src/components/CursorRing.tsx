@@ -63,6 +63,7 @@ const CursorRing = ({
 			containerWidth: 0,
 			containerHeight: 0,
 			isFixedAttachment: false,
+			rect: backgroundSource.getBoundingClientRect(),
 		}
 
 		const extractImageUrl = (value: string) => {
@@ -195,6 +196,7 @@ const CursorRing = ({
 			metrics.containerHeight = metrics.isFixedAttachment
 				? window.innerHeight
 				: rect.height
+			metrics.rect = rect
 
 			computeDrawnSize(metrics.containerWidth, metrics.containerHeight)
 
@@ -216,14 +218,17 @@ const CursorRing = ({
 			ringBg.style.backgroundSize = `${metrics.drawnWidth}px ${metrics.drawnHeight}px`
 		}
 
+		const updateBackgroundRect = () => {
+			metrics.rect = backgroundSource.getBoundingClientRect()
+		}
+
 		const updateBackgroundPosition = () => {
-			const rect = backgroundSource.getBoundingClientRect()
 			const localX = metrics.isFixedAttachment
 				? current.x
-				: current.x - rect.left
+				: current.x - metrics.rect.left
 			const localY = metrics.isFixedAttachment
 				? current.y
-				: current.y - rect.top
+				: current.y - metrics.rect.top
 			const bgX = metrics.offsetX - localX + size / 2
 			const bgY = metrics.offsetY - localY + size / 2
 			ringBg.style.backgroundPosition = `${bgX}px ${bgY}px`
@@ -301,20 +306,33 @@ const CursorRing = ({
 			scheduleUpdate()
 		}
 
+		let scrollRafId: number | null = null
+		const handleScroll = () => {
+			if (scrollRafId !== null) return
+			scrollRafId = requestAnimationFrame(() => {
+				scrollRafId = null
+				updateBackgroundRect()
+				scheduleUpdate()
+			})
+		}
+
 		window.addEventListener("pointermove", handlePointerMove, {
 			passive: true,
 		})
 		window.addEventListener("pointerdown", handlePointerMove, {
 			passive: true,
 		})
+		window.addEventListener("scroll", handleScroll, { passive: true })
 		window.addEventListener("pointerleave", handlePointerLeave)
 		window.addEventListener("blur", handlePointerLeave)
 		window.addEventListener("resize", updateMetrics)
 
 		return () => {
 			if (rafId !== null) cancelAnimationFrame(rafId)
+			if (scrollRafId !== null) cancelAnimationFrame(scrollRafId)
 			window.removeEventListener("pointermove", handlePointerMove)
 			window.removeEventListener("pointerdown", handlePointerMove)
+			window.removeEventListener("scroll", handleScroll)
 			window.removeEventListener("pointerleave", handlePointerLeave)
 			window.removeEventListener("blur", handlePointerLeave)
 			window.removeEventListener("resize", updateMetrics)
