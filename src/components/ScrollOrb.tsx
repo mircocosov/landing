@@ -286,13 +286,14 @@ const ScrollOrb = ({ size = DEFAULT_SIZE, backgroundImage }: ScrollOrbProps) => 
 		}
 
 		const updateTarget = () => {
-			const scrollY = window.scrollY
-			const amplitude = Math.min(220, window.innerWidth * 0.22)
-			const frequency = 0.003
-			const baseX = window.innerWidth * 0.68
-			const baseY = window.innerHeight * 0.2
-			target.x = baseX + Math.sin(scrollY * frequency) * amplitude
-			target.y = baseY + scrollY * 0.35
+			const scrollTop = window.scrollY
+			const amplitude = Math.min(220, window.innerWidth * 0.25)
+			const centerX = window.innerWidth / 2
+			const centerY = window.innerHeight / 2
+			const wavelength = Math.max(window.innerHeight * 1.2, 1)
+			const phase = (scrollTop / wavelength) * Math.PI * 2
+			target.x = centerX + Math.sin(phase) * amplitude
+			target.y = centerY
 			target.active = 1
 			scheduleUpdate()
 		}
