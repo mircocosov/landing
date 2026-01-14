@@ -6,7 +6,7 @@ type CursorRingProps = {
 	backgroundImage: string
 }
 
-const DEFAULT_SIZE = 140
+const DEFAULT_SIZE = 180
 
 const isCoarsePointer = () =>
 	window.matchMedia("(pointer: coarse)").matches ||
