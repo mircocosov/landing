@@ -2,6 +2,7 @@ import { memo, useCallback, useState } from "react"
 import type { MouseEvent, PointerEvent, ReactNode } from "react"
 import "./App.scss"
 import CursorRing from "./components/CursorRing.tsx"
+import ScrollOrb from "./components/ScrollOrb.tsx"
 import SpotlightBackground from "./components/SpotlightBackground.tsx"
 
 const dasha1Image = "/dasha1.jpg"
@@ -128,6 +129,7 @@ export default function App() {
 			onPointerLeave={handlePointerLeave}
 		>
 			<CursorRing backgroundImage="/background.png" />
+			<ScrollOrb backgroundImage="/background.png" />
 			<div className="home-cursor-glow" aria-hidden="true" />
 			<BackgroundTransitionOverlay isLeavingHome={isLeavingHome} />
 			<FloatingParticles isLeavingHome={isLeavingHome} />

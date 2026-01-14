@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import type { CSSProperties } from "react"
 
-type CursorRingProps = {
+type ScrollOrbProps = {
 	size?: number
 	backgroundImage: string
 }
@@ -12,18 +12,15 @@ const isCoarsePointer = () =>
 	window.matchMedia("(pointer: coarse)").matches ||
 	window.matchMedia("(hover: none)").matches
 
-const CursorRing = ({
-	size = DEFAULT_SIZE,
-	backgroundImage,
-}: CursorRingProps) => {
-	const ringRef = useRef<HTMLDivElement | null>(null)
+const ScrollOrb = ({ size = DEFAULT_SIZE, backgroundImage }: ScrollOrbProps) => {
+	const orbRef = useRef<HTMLDivElement | null>(null)
 
 	useEffect(() => {
 		if (isCoarsePointer()) return
-		const ring = ringRef.current
-		if (!ring) return
-		const ringBg = ring.querySelector<HTMLDivElement>(".cursor-ring__bg")
-		if (!ringBg) return
+		const orb = orbRef.current
+		if (!orb) return
+		const orbBg = orb.querySelector<HTMLDivElement>(".cursor-ring__bg")
+		if (!orbBg) return
 
 		const backgroundSource =
 			document.querySelector<HTMLElement>("[data-cursor-ring-source]") ??
@@ -38,19 +35,19 @@ const CursorRing = ({
 					? backgroundStyles.backgroundImage
 					: `url(${backgroundImage})`
 
-			ringBg.style.backgroundImage = computedImage
-			ringBg.style.backgroundRepeat = backgroundStyles.backgroundRepeat
-			ringBg.style.backgroundAttachment =
+			orbBg.style.backgroundImage = computedImage
+			orbBg.style.backgroundRepeat = backgroundStyles.backgroundRepeat
+			orbBg.style.backgroundAttachment =
 				backgroundStyles.backgroundAttachment
 		}
 
 		const target = {
-			x: window.innerWidth / 2,
-			y: window.innerHeight / 2,
-			active: 0,
+			x: window.innerWidth * 0.7,
+			y: window.innerHeight * 0.25,
+			active: 1,
 		}
 		const current = { ...target }
-		const easing = 0.18
+		const easing = 0.12
 		let rafId: number | null = null
 
 		const metrics = {
@@ -213,7 +210,7 @@ const CursorRing = ({
 				metrics.drawnHeight
 			)
 
-			ringBg.style.backgroundSize = `${metrics.drawnWidth}px ${metrics.drawnHeight}px`
+			orbBg.style.backgroundSize = `${metrics.drawnWidth}px ${metrics.drawnHeight}px`
 		}
 
 		const updateBackgroundPosition = () => {
@@ -226,7 +223,7 @@ const CursorRing = ({
 				: current.y - rect.top
 			const bgX = metrics.offsetX - localX + size / 2
 			const bgY = metrics.offsetY - localY + size / 2
-			ringBg.style.backgroundPosition = `${bgX}px ${bgY}px`
+			orbBg.style.backgroundPosition = `${bgX}px ${bgY}px`
 		}
 
 		const image = new Image()
@@ -257,25 +254,24 @@ const CursorRing = ({
 			current.y = nextY
 			current.active = nextActive
 
-			ring.style.transform = `translate3d(${nextX - size / 2}px, ${
+			orb.style.transform = `translate3d(${nextX - size / 2}px, ${
 				nextY - size / 2
 			}px, 0)`
-			ring.style.setProperty("--cursor-active", `${nextActive}`)
+			orb.style.setProperty("--cursor-active", `${nextActive}`)
 			updateBackgroundPosition()
 
 			const isSettled =
 				Math.abs(nextX - target.x) < 0.3 &&
-				Math.abs(nextY - target.y) < 0.3 &&
-				Math.abs(nextActive - target.active) < 0.02
+				Math.abs(nextY - target.y) < 0.3
 
 			if (isSettled) {
 				current.x = target.x
 				current.y = target.y
 				current.active = target.active
-				ring.style.transform = `translate3d(${target.x - size / 2}px, ${
+				orb.style.transform = `translate3d(${target.x - size / 2}px, ${
 					target.y - size / 2
 				}px, 0)`
-				ring.style.setProperty("--cursor-active", `${target.active}`)
+				orb.style.setProperty("--cursor-active", `${target.active}`)
 				updateBackgroundPosition()
 				rafId = null
 				return
@@ -289,35 +285,36 @@ const CursorRing = ({
 			rafId = requestAnimationFrame(applyPosition)
 		}
 
-		const handlePointerMove = (event: PointerEvent) => {
-			target.x = event.clientX
-			target.y = event.clientY
+		const updateTarget = () => {
+			const scrollY = window.scrollY
+			const amplitude = Math.min(220, window.innerWidth * 0.22)
+			const frequency = 0.003
+			const baseX = window.innerWidth * 0.68
+			const baseY = window.innerHeight * 0.2
+			target.x = baseX + Math.sin(scrollY * frequency) * amplitude
+			target.y = baseY + scrollY * 0.35
 			target.active = 1
 			scheduleUpdate()
 		}
 
-		const handlePointerLeave = () => {
-			target.active = 0
-			scheduleUpdate()
+		const handleScroll = () => {
+			updateTarget()
 		}
 
-		window.addEventListener("pointermove", handlePointerMove, {
-			passive: true,
-		})
-		window.addEventListener("pointerdown", handlePointerMove, {
-			passive: true,
-		})
-		window.addEventListener("pointerleave", handlePointerLeave)
-		window.addEventListener("blur", handlePointerLeave)
-		window.addEventListener("resize", updateMetrics)
+		const handleResize = () => {
+			updateMetrics()
+			updateTarget()
+		}
+
+		updateTarget()
+
+		window.addEventListener("scroll", handleScroll, { passive: true })
+		window.addEventListener("resize", handleResize)
 
 		return () => {
 			if (rafId !== null) cancelAnimationFrame(rafId)
-			window.removeEventListener("pointermove", handlePointerMove)
-			window.removeEventListener("pointerdown", handlePointerMove)
-			window.removeEventListener("pointerleave", handlePointerLeave)
-			window.removeEventListener("blur", handlePointerLeave)
-			window.removeEventListener("resize", updateMetrics)
+			window.removeEventListener("scroll", handleScroll)
+			window.removeEventListener("resize", handleResize)
 		}
 	}, [size, backgroundImage])
 
@@ -327,8 +324,8 @@ const CursorRing = ({
 
 	return (
 		<div
-			ref={ringRef}
-			className="cursor-ring mirror-orb"
+			ref={orbRef}
+			className="scroll-orb mirror-orb"
 			aria-hidden="true"
 			style={
 				{
@@ -341,4 +338,4 @@ const CursorRing = ({
 	)
 }
 
-export default CursorRing
+export default ScrollOrb
