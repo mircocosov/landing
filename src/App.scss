@@ -55,6 +55,11 @@ $neon-pink-light: #f3d6c6;
 	--reveal-y: 50%;
 	--reveal-size: 0px;
 	--reveal-active: 0;
+	cursor: none;
+}
+
+.home-page-neon * {
+	cursor: none;
 }
 
 .home-animated-gradient,
@@ -1402,7 +1407,6 @@ html {
 	z-index: 9999;
 	width: var(--cursor-ring-size, 64px);
 	height: var(--cursor-ring-size, 64px);
-	border: 2px solid rgba(255, 255, 255, 0.7);
 	border-radius: 999px;
 	pointer-events: none;
 	transform: translate3d(-9999px, -9999px, 0);
