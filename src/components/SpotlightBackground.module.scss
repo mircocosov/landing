@@ -6,6 +6,18 @@ $milk-color: rgba(247, 242, 232, 0.85);
 	initial-value: 0;
 }
 
+@property --mx {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 50%;
+}
+
+@property --my {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 50%;
+}
+
 .wrap {
 	--mx: 50%;
 	--my: 50%;
@@ -19,6 +31,7 @@ $milk-color: rgba(247, 242, 232, 0.85);
 	width: 100%;
 	min-height: 100vh;
 	background-color: #f7f2e8;
+	transition: --mx 0.25s ease, --my 0.25s ease;
 }
 
 .milk,
@@ -38,20 +51,21 @@ $milk-color: rgba(247, 242, 232, 0.85);
 	background-size: cover;
 	background-position: center;
 	pointer-events: none;
+	opacity: var(--alpha);
 
 	-webkit-mask-image: radial-gradient(
 		circle at var(--mx) var(--my),
-		rgba(0, 0, 0, var(--alpha)) calc(var(--r) - var(--fade)),
+		rgba(0, 0, 0, 1) calc(var(--r) - var(--fade)),
 		rgba(0, 0, 0, 0) var(--r)
 	);
 	mask-image: radial-gradient(
 		circle at var(--mx) var(--my),
-		rgba(0, 0, 0, var(--alpha)) calc(var(--r) - var(--fade)),
+		rgba(0, 0, 0, 1) calc(var(--r) - var(--fade)),
 		rgba(0, 0, 0, 0) var(--r)
 	);
 	-webkit-mask-repeat: no-repeat;
 	mask-repeat: no-repeat;
-	transition: --alpha 0.6s ease;
+	transition: opacity 0.6s ease;
 }
 
 .content {
@@ -84,6 +98,10 @@ $milk-color: rgba(247, 242, 232, 0.85);
 }
 
 @media (prefers-reduced-motion: reduce) {
+	.wrap {
+		transition: none;
+	}
+
 	.photo {
 		transition: none;
 	}
