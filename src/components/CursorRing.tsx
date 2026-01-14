@@ -42,6 +42,8 @@ const CursorRing = ({ size = DEFAULT_SIZE, backgroundImage }: CursorRingProps) =
 			ring.style.transform = `translate3d(${nextX - size / 2}px, ${
 				nextY - size / 2
 			}px, 0)`
+			ring.style.setProperty("--cursor-x", `${nextX}px`)
+			ring.style.setProperty("--cursor-y", `${nextY}px`)
 			ring.style.setProperty("--cursor-active", `${nextActive}`)
 
 			const isSettled =
@@ -56,6 +58,8 @@ const CursorRing = ({ size = DEFAULT_SIZE, backgroundImage }: CursorRingProps) =
 				ring.style.transform = `translate3d(${target.x - size / 2}px, ${
 					target.y - size / 2
 				}px, 0)`
+				ring.style.setProperty("--cursor-x", `${target.x}px`)
+				ring.style.setProperty("--cursor-y", `${target.y}px`)
 				ring.style.setProperty("--cursor-active", `${target.active}`)
 				rafId = null
 				return
